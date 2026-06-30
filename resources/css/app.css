@@ -1,0 +1,47 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    background:#f4f6f9;
+    font-family:Inter,sans-serif;
+}
+
+.sidebar{
+    width:260px;
+    min-height:100vh;
+    background:#0f172a;
+}
+
+.sidebar a{
+    color:#cbd5e1;
+    text-decoration:none;
+    display:block;
+    padding:14px 20px;
+    border-radius:10px;
+    margin:5px;
+    transition:.2s;
+}
+
+.sidebar a:hover{
+    background:#1e293b;
+    color:#fff;
+}
+
+.sidebar .active{
+    background:#2563eb;
+    color:white;
+}
+
+.content{
+    padding:30px;
+}
+
+.card-dashboard{
+    border:none;
+    border-radius:18px;
+    box-shadow:0 3px 12px rgba(0,0,0,.08);
+}

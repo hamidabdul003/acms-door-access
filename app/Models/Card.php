@@ -7,14 +7,43 @@ use Illuminate\Database\Eloquent\Model;
 class Card extends Model
 {
     protected $fillable = [
+
         'uid',
-        'name',
-        'position',
-        'status'
+
+        'owner_name',
+
+        'owner_type',
+
+        'status',
+
+        'expired_at',
+
     ];
 
-    public function logs()
+    protected $casts = [
+
+        'status'=>'boolean',
+
+        'expired_at'=>'date',
+
+    ];
+    public function permissions()
     {
-        return $this->hasMany(AccessLog::class);
+        return $this->hasMany(
+            CardPermission::class
+        );
+    }
+
+    public function isExpired()
+    {
+        if(!$this->expired_at){
+
+            return false;
+
+        }
+
+        return now()->gt(
+            $this->expired_at
+        );
     }
 }

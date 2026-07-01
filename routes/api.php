@@ -14,7 +14,7 @@ Route::prefix('device')->group(function () {
 
     Route::post(
         '/access',
-        [AccessApiController::class,'check']
+        [AccessApiController::class,'checkAccess']
     );
 
 });

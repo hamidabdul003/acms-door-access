@@ -12,6 +12,9 @@ class Device extends Model
         'device_name',
         'location',
         'ip_address',
+        'wifi_rssi',
+        'heap',
+        'uptime',
         'mac_address',
         'api_key',
         'firmware',
@@ -19,6 +22,7 @@ class Device extends Model
         'status',
         'last_seen',
         'description',
+
     ];
 
     protected $casts = [
@@ -49,12 +53,16 @@ class Device extends Model
         });
     }
 
-    public function isOnline(): bool
-    {
-        if (!$this->last_seen) {
-            return false;
-        }
+public function isOnline(): bool
+{
+    if (!$this->last_seen) {
 
-        return $this->last_seen->gt(now()->subMinutes(2));
+        return false;
+
     }
+
+    return now()
+        ->diffInSeconds($this->last_seen)
+        < 30;
+}
 }

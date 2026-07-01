@@ -8,55 +8,88 @@ use Illuminate\Http\Request;
 
 class DeviceApiController extends Controller
 {
-    /**
-     * Heartbeat dari ESP32
-     */
     public function heartbeat(Request $request)
     {
         $request->validate([
-            'api_key'      => 'required',
-            'ip_address'   => 'nullable|ip',
-            'mac_address'  => 'nullable|string|max:50',
-            'firmware'     => 'nullable|string|max:50',
-            'wifi_signal'  => 'nullable|integer',
-            'heap_memory'  => 'nullable|integer',
-            'temperature'  => 'nullable|numeric',
+
+            'uuid'=>'required',
+
+            'api_key'=>'required',
+
+            'firmware'=>'nullable',
+
+            'ip_address'=>'nullable',
+
+            'wifi_rssi'=>'nullable',
+
+            'heap'=>'nullable',
+
+            'uptime'=>'nullable',
+
+            'mac_address'=>'nullable',
+
         ]);
 
-        $device = Device::where('api_key', $request->api_key)->first();
+        $device = Device::where(
 
-        if (!$device) {
+            'uuid',
+
+            $request->uuid
+
+        )->first();
+
+        if(!$device){
 
             return response()->json([
-                'success' => false,
-                'message' => 'Invalid API Key'
-            ], 401);
+
+                'status'=>'error',
+
+                'message'=>'Device not found'
+
+            ],404);
 
         }
+
+        if($device->api_key != $request->api_key){
+
+            return response()->json([
+
+                'status'=>'error',
+
+                'message'=>'Invalid API Key'
+
+            ],401);
+
+        }
+
         $device->update([
 
-            'ip_address'  => $request->ip_address,
+            'firmware'=>$request->firmware,
 
-            'mac_address' => $request->mac_address,
+            'ip_address'=>$request->ip_address,
 
-            'firmware'    => $request->firmware,
+            'wifi_rssi'=>$request->wifi_rssi,
 
-            'last_seen'   => now(),
+            'heap'=>$request->heap,
+
+            'uptime'=>$request->uptime,
+
+            'mac_address'=>$request->mac_address,
+
+            'last_seen'=>now(),
+
+            'status'=>1,
 
         ]);
+
         return response()->json([
 
-            'success' => true,
+            'status'=>'ok',
 
-            'message' => 'Heartbeat received',
-
-            'server_time' => now()->toDateTimeString(),
-
-            'relay_time' => $device->relay_time,
-
-            'device_uuid' => $device->uuid,
+            'server_time'=>now(),
 
         ]);
 
     }
+
 }

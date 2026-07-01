@@ -6,11 +6,11 @@
 
 <div class="row">
 
-<div class="col-lg-8">
+<div class="col-lg-4">
 
 <div class="card">
 
-<div class="card-header">
+<div class="card-header bg-white">
 
 <h4>
 
@@ -24,27 +24,11 @@
 
 <div class="card-body">
 
-<table class="table">
+<table class="table table-borderless">
 
 <tr>
 
-<th width="180">
-
-UUID
-
-</th>
-
-<td>
-
-{{ $device->uuid }}
-
-</td>
-
-</tr>
-
-<tr>
-
-<th>
+<th width="120">
 
 Location
 
@@ -68,22 +52,11 @@ IP Address
 
 <td>
 
-{{ $device->ip_address ?? '-' }}
+<code>
 
-</td>
+{{ $device->ip_address }}
 
-</tr>
-<tr>
-
-<th>
-
-MAC Address
-
-</th>
-
-<td>
-
-{{ $device->mac_address ?? '-' }}
+</code>
 
 </td>
 
@@ -93,170 +66,211 @@ MAC Address
 
 <th>
 
-Firmware
+Status
 
 </th>
 
 <td>
 
-{{ $device->firmware }}
+@if($device->status)
 
-</td>
+<span class="badge bg-success">
 
-</tr>
-
-<tr>
-
-<th>
-
-Relay
-
-</th>
-
-<td>
-
-{{ $device->relay_time }} sec
-
-</td>
-
-</tr>
-
-<tr>
-
-<th>
-
-Last Seen
-
-</th>
-
-<td>
-
-{{ $device->last_seen ?? '-' }}
-
-</td>
-
-</tr>
-
-<tr>
-
-<th>
-
-Description
-
-</th>
-
-<td>
-
-{{ $device->description ?? '-' }}
-
-</td>
-
-</tr>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-<div class="col-lg-4">
-
-<div class="card">
-
-<div class="card-body text-center">
-
-@if($device->isOnline())
-
-<span class="badge bg-success fs-6">
-
-ONLINE
+Online
 
 </span>
 
 @else
 
-<span class="badge bg-danger fs-6">
+<span class="badge bg-danger">
 
-OFFLINE
+Offline
 
 </span>
 
 @endif
 
-<hr>
+</td>
 
-<button
-class="btn btn-primary w-100 mb-2">
+</tr>
 
-<i class="bi bi-lightning"></i>
+@extends('layouts.master')
 
-Test Relay
+@section('title','Device Detail')
 
-</button>
+@section('content')
 
-<button
-<div class="mb-2">
+<div class="row">
 
-<label class="form-label">
+<div class="col-lg-4">
 
-API Key
+<div class="card">
 
-</label>
+<div class="card-header bg-white">
 
-<div class="input-group">
+<h4>
 
-<input
-type="password"
-id="apiKey"
-class="form-control"
-readonly
-value="{{ $device->api_key }}">
+<i class="bi bi-hdd-network"></i>
 
-<button
-class="btn btn-outline-secondary"
-type="button"
-onclick="toggleApiKey()">
+{{ $device->device_name }}
 
-<i class="bi bi-eye"></i>
-
-</button>
-
-<button
-class="btn btn-outline-primary"
-type="button"
-onclick="copyApiKey()">
-
-<i class="bi bi-clipboard"></i>
-
-</button>
+</h4>
 
 </div>
 
+<div class="card-body">
+
+<table class="table table-borderless">
+
+<tr>
+
+<th width="120">
+
+Location
+
+</th>
+
+<td>
+
+{{ $device->location }}
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+IP Address
+
+</th>
+
+<td>
+
+<code>
+
+{{ $device->ip_address }}
+
+</code>
+
+</td>
+
+</tr>
+
+<tr>
+
+<th>
+
+Status
+
+</th>
+
+<td>
+
+@if($device->status)
+
+<span class="badge bg-success">
+
+Online
+
+</span>
+
+@else
+
+<span class="badge bg-danger">
+
+Offline
+
+</span>
+
+@endif
+
+</td>
+
+</tr>
+
+<div class="row g-3">
+
+    <div class="col-md-6">
+
+        <button
+            type="button"
+            class="btn btn-primary w-100"
+            onclick="copyApiKey()">
+
+            <i class="bi bi-clipboard"></i>
+
+            Copy API Key
+
+        </button>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <form
+            action="{{ route('devices.regenerate-key', $device) }}"
+            method="POST">
+
+            @csrf
+
+            <button
+                type="submit"
+                class="btn btn-warning w-100">
+
+                <i class="bi bi-key"></i>
+
+                Generate API Key
+
+            </button>
+
+        </form>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <button
+            class="btn btn-success w-100"
+            disabled>
+
+            <i class="bi bi-broadcast"></i>
+
+            Test Relay
+
+        </button>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <button
+            class="btn btn-danger w-100"
+            disabled>
+
+            <i class="bi bi-arrow-clockwise"></i>
+
+            Restart Device
+
+        </button>
+
+    </div>
+
 </div>
 
-<i class="bi bi-key"></i>
+<hr class="my-4">
 
-Copy API Key
+<div class="alert alert-info mb-0">
 
-</button>
+    <i class="bi bi-info-circle"></i>
 
-<button
-class="btn btn-warning w-100">
-
-<i class="bi bi-arrow-repeat"></i>
-
-Generate API Key
-
-</button>
+    Remote control akan aktif setelah firmware ESP32
+    terhubung dengan endpoint API.
 
 </div>
 
-</div>
-
-</div>
-
-</div>
+@endsection
 
 @push('scripts')
 
@@ -264,28 +278,31 @@ Generate API Key
 
 function toggleApiKey(){
 
-    const input = document.getElementById('apiKey');
+    const input=document.getElementById('apikey');
 
-    input.type =
-        input.type === 'password'
-        ? 'text'
-        : 'password';
+    input.type=input.type==='password'
+        ?'text'
+        :'password';
 
 }
 
-function copyApiKey(){
+async function copyApiKey(){
 
-    navigator.clipboard.writeText(
-        document.getElementById('apiKey').value
+    const input=document.getElementById('apikey');
+
+    await navigator.clipboard.writeText(
+        input.value
     );
 
     Swal.fire({
 
         icon:'success',
 
-        title:'API Key berhasil disalin',
+        title:'Copied',
 
-        timer:1200,
+        text:'API Key berhasil disalin.',
+
+        timer:1500,
 
         showConfirmButton:false
 
@@ -296,5 +313,3 @@ function copyApiKey(){
 </script>
 
 @endpush
-
-@endsection

@@ -32,12 +32,20 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('devices', DeviceController::class);
 
+    Route::resource('permissions', PermissionController::class)
+        ->parameters([
+            'permissions' => 'card'
+        ])
+        ->only([
+            'index',
+            'edit',
+            'update'
+        ]);
+
     Route::post(
         '/devices/{device}/regenerate-key',
         [DeviceController::class, 'regenerateKey']
     )->name('devices.regenerate-key');
-
-    Route::get('/permissions',[PermissionController::class,'index'])->name('permissions.index');
 
     Route::get('/logs',[AccessLogController::class,'index'])->name('logs.index');
 

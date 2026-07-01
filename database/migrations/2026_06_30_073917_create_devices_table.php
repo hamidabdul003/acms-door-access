@@ -10,26 +10,37 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('devices', function (Blueprint $table) {
-        $table->id();
+{
+    Schema::create('devices', function (Blueprint $table) {
 
-        $table->string('name');
+    $table->id();
 
-        $table->string('location')->nullable();
+    $table->uuid('uuid')->unique();
 
-        $table->ipAddress('ip_address')->nullable();
+    $table->string('device_name');
 
-        $table->string('api_key')->unique();
+    $table->string('location');
 
-        $table->boolean('status')->default(true);
+    $table->ipAddress('ip_address')->nullable();
 
-        $table->timestamp('last_seen')->nullable();
+    $table->string('mac_address')->nullable();
 
-        $table->timestamps();
-    });
+    $table->string('api_key',64)->unique();
 
-    }
+    $table->string('firmware')->default('1.0.0');
+
+    $table->integer('relay_time')->default(3);
+
+    $table->boolean('status')->default(false);
+
+    $table->timestamp('last_seen')->nullable();
+
+    $table->text('description')->nullable();
+
+    $table->timestamps();
+
+   });
+}
 
     /**
      * Reverse the migrations.

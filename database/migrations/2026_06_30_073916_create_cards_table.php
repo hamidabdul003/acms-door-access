@@ -13,15 +13,27 @@ return new class extends Migration
 public function up(): void
 {
     Schema::create('cards', function (Blueprint $table) {
+
         $table->id();
 
-        $table->string('uid', 50)->unique();
-        $table->string('name');
-        $table->string('position')->nullable();
+        $table->string('uid',32)->unique();
+
+        $table->string('owner_name');
+
+        $table->enum('owner_type',[
+            'Guru',
+            'Siswa',
+            'Staff',
+            'Admin',
+            'Guest'
+        ]);
 
         $table->boolean('status')->default(true);
 
+        $table->date('expired_at')->nullable();
+
         $table->timestamps();
+
     });
 }
 

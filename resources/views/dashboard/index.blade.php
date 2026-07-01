@@ -6,102 +6,246 @@
 
 <div class="row g-4">
 
-    <div class="col-md-3">
-        <div class="card card-stat">
+    <div class="col-lg-3 col-md-6">
+
+        <div class="card">
+
             <div class="card-body">
-                <h6>Total RFID Card</h6>
-                <h2>{{ $totalCards }}</h2>
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <small>Total RFID</small>
+
+                        <h2 class="fw-bold">
+
+                            {{ $totalCards ?? 0 }}
+
+                        </h2>
+
+                    </div>
+
+                    <div>
+
+                        <i class="bi bi-credit-card text-primary fs-1"></i>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
+
     </div>
 
-    <div class="col-md-3">
-        <div class="card card-stat">
+    <div class="col-lg-3 col-md-6">
+
+        <div class="card">
+
             <div class="card-body">
-                <h6>Total Device</h6>
-                <h2>{{ $totalDevices }}</h2>
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <small>Devices</small>
+
+                        <h2 class="fw-bold">
+
+                            {{ $totalDevices ?? 0 }}
+
+                        </h2>
+
+                    </div>
+
+                    <div>
+
+                        <i class="bi bi-hdd-network text-success fs-1"></i>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
+
     </div>
 
-    <div class="col-md-3">
-        <div class="card card-stat">
+    <div class="col-lg-3 col-md-6">
+
+        <div class="card">
+
             <div class="card-body">
-                <h6>Today's Access</h6>
-                <h2>{{ $todayAccess }}</h2>
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <small>Today's Access</small>
+
+                        <h2 class="fw-bold">
+
+                            {{ $todayAccess ?? 0 }}
+
+                        </h2>
+
+                    </div>
+
+                    <div>
+
+                        <i class="bi bi-door-open text-warning fs-1"></i>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
+
     </div>
 
-    <div class="col-md-3">
-        <div class="card card-stat">
+    <div class="col-lg-3 col-md-6">
+
+        <div class="card">
+
             <div class="card-body">
-                <h6>Unknown Card</h6>
-                <h2>{{ $unknownCards }}</h2>
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <small>Unknown Card</small>
+
+                        <h2 class="fw-bold">
+
+                            {{ $unknownCard ?? 0 }}
+
+                        </h2>
+
+                    </div>
+
+                    <div>
+
+                        <i class="bi bi-exclamation-circle text-danger fs-1"></i>
+
+                    </div>
+
+                </div>
+
             </div>
+
         </div>
+
     </div>
 
 </div>
 
-<div class="card mt-4 card-stat">
+<div class="row mt-4">
 
-    <div class="card-header">
+    <div class="col-lg-8">
 
-        Recent Activity
+        <div class="card">
+
+            <div class="card-header">
+
+                Recent Activity
+
+            </div>
+
+            <div class="card-body">
+
+                <table class="table table-hover">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>UID</th>
+
+                            <th>Card</th>
+
+                            <th>Device</th>
+
+                            <th>Status</th>
+
+                            <th>Time</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+
+                            <td colspan="5" class="text-center">
+
+                                Belum ada data
+
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
 
     </div>
 
-    <div class="card-body">
+    <div class="col-lg-4">
 
-        <table class="table">
+        <div class="card">
 
-            <thead>
+            <div class="card-header">
 
-            <tr>
+                Access Today
 
-                <th>UID</th>
-                <th>Device</th>
-                <th>Time</th>
+            </div>
 
-            </tr>
+            <div class="card-body">
 
-            </thead>
+                <div id="chart"></div>
 
-            <tbody>
+            </div>
 
-            @forelse($recentLogs as $log)
-
-                <tr>
-
-                    <td>{{ $log->uid }}</td>
-
-                    <td>{{ $log->device }}</td>
-
-                    <td>{{ $log->created_at }}</td>
-
-                </tr>
-
-            @empty
-
-                <tr>
-
-                    <td colspan="3" class="text-center">
-
-                        Belum ada data
-
-                    </td>
-
-                </tr>
-
-            @endforelse
-
-            </tbody>
-
-        </table>
+        </div>
 
     </div>
 
 </div>
 
 @endsection
+
+@push('scripts')
+
+<script>
+
+new ApexCharts(document.querySelector("#chart"),{
+
+    chart:{
+        type:'area',
+        height:250
+    },
+
+    series:[{
+        name:'Access',
+        data:[0,0,0,0,0,0]
+    }],
+
+    xaxis:{
+        categories:['07','09','11','13','15','17']
+    }
+
+}).render();
+
+</script>
+
+@endpush

@@ -270,6 +270,124 @@ Offline
 
 </div>
 
+<hr class="my-4">
+
+<div class="row g-3">
+
+    <div class="col-md-3">
+
+        <div class="card border-success">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-heart-pulse fs-2 text-success"></i>
+
+                <h6 class="mt-2 mb-0">
+
+                    Device Status
+
+                </h6>
+
+                <strong>
+
+                    {{ $device->status ? 'ONLINE' : 'OFFLINE' }}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-wifi fs-2 text-primary"></i>
+
+                <h6 class="mt-2 mb-0">
+
+                    WiFi RSSI
+
+                </h6>
+
+                <strong>
+
+                    --
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-memory fs-2 text-warning"></i>
+
+                <h6 class="mt-2 mb-0">
+
+                    Free Heap
+
+                </h6>
+
+                <strong>
+
+                    --
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="card">
+
+            <div class="card-body text-center">
+
+                <i class="bi bi-clock-history fs-2 text-info"></i>
+
+                <h6 class="mt-2 mb-0">
+
+                    Last Seen
+
+                </h6>
+
+                <strong>
+
+                    @if($device->last_seen)
+
+                        {{ \Carbon\Carbon::parse($device->last_seen)->diffForHumans() }}
+
+                    @else
+
+                        Never
+
+                    @endif
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 @endsection
 
 @push('scripts')
